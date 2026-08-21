@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DataSys+ V2 — Proficiency Worksheet (Rebuilt)</title>
+<style>
+body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#222;background:#f7f7f7;margin:0;padding:32px 16px;}
+.wrap{max-width:100%;margin:0 auto;}
+.pw{border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;background:#fff;}
+.pw-head{background:linear-gradient(90deg,#C1272D,#6B2D5C);color:#fff;padding:22px 26px;}
+.pw-head-title{font-size:25px;font-weight:800;margin-bottom:6px;}
+.pw-head-sub{font-size:15.5px;opacity:.9;}
+
+.pw-guidance-banner{display:flex;gap:10px;align-items:flex-start;background:#fff8e6;border-bottom:1px solid #f0e0b0;padding:12px 26px;}
+.pw-guidance-icon{flex-shrink:0;margin-top:1px;}
+.pw-guidance-text{font-size:13.5px;color:#6b4d0f;line-height:1.55;}
+.pw-guidance-text strong{color:#5c4009;}
+
+.pw-tabs{display:flex;background:#f5f5f5;flex-wrap:wrap;}
+.pw-tab{flex:1;min-width:110px;text-align:center;padding:11px 8px;font-size:14px;font-weight:700;color:#888;cursor:pointer;border-bottom:3px solid transparent;background:none;font-family:inherit;}
+.pw-tab.active{background:#fff;}
+.pw-tab.active[data-ch="academic"]{color:#6B2D5C;border-color:#6B2D5C;}
+.pw-tab.active[data-ch="enterprise"]{color:#1E40AF;border-color:#1E40AF;}
+.pw-tab.active[data-ch="government"]{color:#3D6B35;border-color:#3D6B35;}
+.pw-tab.active[data-ch="partners"]{color:#C45E1A;border-color:#C45E1A;}
+
+.pw-body{padding:24px 28px;}
+.pw-part{margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid #eee;}
+.pw-part:last-child{border-bottom:none;}
+.pw-part-label{font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#C1272D;margin-bottom:10px;}
+.pw-q{font-size:16.5px;font-weight:700;color:#222;margin-bottom:6px;}
+.pw-help{font-size:14px;color:#777;margin-bottom:4px;}
+.pw-expect{font-size:13px;color:#6B2D5C;background:#f5f0f8;border-radius:6px;padding:7px 11px;margin-bottom:8px;display:inline-block;}
+.pw-expect strong{color:#3b0764;}
+textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:16px;min-height:70px;resize:vertical;overflow:hidden;margin-top:6px;}
+.pw-name-row{display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.pw-name-row label{font-size:13.5px;font-weight:700;color:#555;display:block;margin-bottom:4px;}
+.pw-name-row input{border:1px solid #ddd;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:16px;}
+.print-note{font-size:13.5px;color:#888;text-align:center;margin-top:14px;}
+
+.pw-channel-panel{display:none;border-left:3px solid transparent;padding-left:12px;}
+.pw-channel-panel.active{display:block;}
+.pw-channel-panel[data-ch="academic"]{border-left-color:#6B2D5C;}
+.pw-channel-panel[data-ch="enterprise"]{border-left-color:#1E40AF;}
+.pw-channel-panel[data-ch="government"]{border-left-color:#3D6B35;}
+.pw-channel-panel[data-ch="partners"]{border-left-color:#C45E1A;}
+.pw-channel-heading{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:none;}
+.pw-channel-panel[data-ch="academic"] .pw-channel-heading{color:#6B2D5C;}
+.pw-channel-panel[data-ch="enterprise"] .pw-channel-heading{color:#1E40AF;}
+.pw-channel-panel[data-ch="government"] .pw-channel-heading{color:#3D6B35;}
+.pw-channel-panel[data-ch="partners"] .pw-channel-heading{color:#C45E1A;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .pw-tabs{display:none;}
+  .pw-guidance-banner{display:none;}
+  .print-note{display:none;}
+  .pw-part{page-break-inside:avoid;}
+  .pw-channel-panel{display:block !important;border-top:1px dashed #ddd;padding-top:14px;margin-top:14px;}
+  .pw-channel-panel:first-of-type{border-top:none;margin-top:0;padding-top:0;}
+  .pw-channel-heading{display:block !important;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="pw">
+    <div class="pw-head">
+      <div class="pw-head-title">DataSys+ V2 Proficiency Worksheet</div>
+      <div class="pw-head-sub">Select your channel below. Parts 2 and 4 are graded only on the channel you submit — no penalty for scenarios left blank in other channels.</div>
+    </div>
+
+    <div class="pw-guidance-banner">
+      <svg class="pw-guidance-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="pw-guidance-text"><strong>Before you start:</strong> every question below includes an "Expectation" note describing what a complete answer looks like — length, structure, or level of detail. Follow it closely. The most common reason a submission gets held for revision is an answer that's accurate but too brief or incomplete for what the question is actually asking.</div>
+    </div>
+
+    <div class="pw-tabs" id="pwTabs">
+      <button class="pw-tab active" data-ch="enterprise" onclick="pw_showCh('enterprise')">Enterprise</button>
+      <button class="pw-tab" data-ch="government" onclick="pw_showCh('government')">Government</button>
+      <button class="pw-tab" data-ch="academic" onclick="pw_showCh('academic')">Academic</button>
+      <button class="pw-tab" data-ch="partners" onclick="pw_showCh('partners')">Delivery Partners</button>
+    </div>
+
+    <div class="pw-body">
+      <div class="pw-name-row">
+        <div><label>Name</label><input type="text" placeholder="Your name"></div>
+        <div><label>Date</label><input type="text" placeholder="MM/DD/YYYY"></div>
+        <div><label>Channel Submitted</label><input type="text" id="pwChannelField" placeholder="e.g. Enterprise" value="Enterprise"></div>
+      </div>
+
+      <!-- PART 1 — universal -->
+      <div class="pw-part">
+        <div class="pw-part-label">Part 1 — Product Knowledge</div>
+
+        <div class="pw-q">1. What structural change defines DataSys+ V2 vs. V1, and why does it matter to a customer?</div>
+        <div class="pw-expect"><strong>Expectation:</strong> 2–3 sentences — name the specific change and give a customer-relevant reason it matters, not just "it's new."</div>
+        <div class="pw-help">Look for: the new Data Integration domain (6.0).</div>
+        <textarea onInput="pw_autoGrow(this)"></textarea>
+
+        <div class="pw-q">2. Name two of the six exam domains, one topic each, and explain briefly why that domain would matter to a customer.</div>
+        <div class="pw-expect"><strong>Expectation:</strong> 2 domains, 1 topic each, and 1 sentence per domain on why a customer would actually care — not just the domain name and topic listed on their own.</div>
+        <textarea onInput="pw_autoGrow(this)"></textarea>
+      </div>
+
+      <!-- PART 2 — channel-specific, tabbed -->
+      <div class="pw-part">
+        <div class="pw-part-label">Part 2 — Customer Application <span style="font-weight:400;color:#888;font-style:italic;">(graded on your submitted channel only)</span></div>
+
+        <div class="pw-channel-panel active" data-ch="enterprise">
+          <div class="pw-channel-heading">Enterprise</div>
+          <div class="pw-q">3. Describe a realistic Enterprise buyer and use case — an IT director, platform lead, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+        </div>
+
+        <div class="pw-channel-panel" data-ch="government">
+          <div class="pw-channel-heading">Government</div>
+          <div class="pw-q">3. Describe a realistic Government buyer and use case — a workforce development lead, agency IT manager, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+        </div>
+
+        <div class="pw-channel-panel" data-ch="academic">
+          <div class="pw-channel-heading">Academic</div>
+          <div class="pw-q">3. Describe a realistic Academic buyer and use case — a program coordinator, department chair, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+        </div>
+
+        <div class="pw-channel-panel" data-ch="partners">
+          <div class="pw-channel-heading">Delivery Partners</div>
+          <div class="pw-q">3. Describe a realistic Delivery Partner buyer and use case — a training company owner, curriculum lead, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
+          <textarea onInput="pw_autoGrow(this)"></textarea>
+        </div>
+      </div>
+
+      <!-- PART 3 — universal, tests Story Structure Framework -->
+      <div class="pw-part">
+        <div class="pw-part-label">Part 3 — Story Fluency</div>
+        <div class="pw-help">Use the Story Structure Framework from Lesson 3 to build a short DataSys+ V2 story for a customer of your choosing.</div>
+        <div class="pw-q">5. Write your story in four labeled parts: (a) your Story Purpose, (b) your Narrative Thread and why it fits this customer, (c) your Key Points tied to that thread, and (d) specific Customer Context connecting your points to this customer's actual situation.</div>
+        <div class="pw-expect"><strong>Expectation:</strong> (a) 1 sentence, (b) 1–2 sentences including your reasoning for the thread, (c) 2–3 points, (d) 1–2 sentences per point connecting it to this customer's specifics. Label each part (a)–(d) — don't submit one unlabeled paragraph.</div>
+        <textarea style="min-height:130px;" onInput="pw_autoGrow(this)"></textarea>
+      </div>
+
+      <!-- PART 4 — channel-specific, tabbed -->
+      <div class="pw-part">
+        <div class="pw-part-label">Part 4 — Applied Judgment <span style="font-weight:400;color:#888;font-style:italic;">(graded on your submitted channel only)</span></div>
+
+        <div class="pw-channel-panel active" data-ch="enterprise">
+          <div class="pw-channel-heading">Enterprise</div>
+          <div class="pw-q">6. Your Enterprise buyer says: "We already have people certified on Azure/AWS — why add this?" Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that doesn't dismiss their existing investment, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
+          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+        </div>
+
+        <div class="pw-channel-panel" data-ch="government">
+          <div class="pw-channel-heading">Government</div>
+          <div class="pw-q">6. Your Government buyer says: "Can you confirm this actually counts before the official crosswalk is published?" Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that's honest rather than overpromising, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
+          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+        </div>
+
+        <div class="pw-channel-panel" data-ch="academic">
+          <div class="pw-channel-heading">Academic</div>
+          <div class="pw-q">6. Your Academic buyer says: "How is this different from CompTIA Data+, which we already teach?" Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that doesn't suggest dropping an existing course, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
+          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+        </div>
+
+        <div class="pw-channel-panel" data-ch="partners">
+          <div class="pw-channel-heading">Delivery Partners</div>
+          <div class="pw-q">6. Your Delivery Partner buyer says: "We don't have a lab environment for this — that's a lot of setup on our end." Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that addresses the logistics concern directly, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
+          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+        </div>
+      </div>
+
+      <div class="print-note">To save as PDF: use your browser's print function (Ctrl/Cmd + P) and choose "Save as PDF."</div>
+    </div>
+  </div>
+</div>
+<script>
+function pw_showCh(ch){
+  document.querySelectorAll('.pw-tab').forEach(t=>t.classList.toggle('active', t.dataset.ch===ch));
+  document.querySelectorAll('.pw-channel-panel').forEach(p=>p.classList.toggle('active', p.dataset.ch===ch));
+  const labels = {enterprise:'Enterprise', government:'Government', academic:'Academic', partners:'Delivery Partners'};
+  document.getElementById('pwChannelField').value = labels[ch];
+}
+
+function pw_autoGrow(el){
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+document.querySelectorAll('textarea').forEach(t => pw_autoGrow(t));
+</script>
+</body>
+</html>

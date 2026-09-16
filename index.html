@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DataSys+ V2 — Proficiency Worksheet (Rebuilt)</title>
+<title>DataSys+ V2 — Proficiency Worksheet (Revised)</title>
 <style>
 body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#222;background:#f7f7f7;margin:0;padding:32px 16px;}
 .wrap{max-width:100%;margin:0 auto;}
@@ -25,6 +25,11 @@ body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#222;background
 .pw-tab.active[data-ch="partners"]{color:#C45E1A;border-color:#C45E1A;}
 
 .pw-body{padding:24px 28px;}
+
+/* Required-field legend + markers */
+.pw-legend{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#888;margin-bottom:16px;}
+.req-mark{color:#C1272D;font-weight:800;margin-left:3px;}
+
 .pw-part{margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid #eee;}
 .pw-part:last-child{border-bottom:none;}
 .pw-part-label{font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#C1272D;margin-bottom:10px;}
@@ -33,7 +38,8 @@ body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;color:#222;background
 .pw-expect{font-size:13px;color:#6B2D5C;background:#f5f0f8;border-radius:6px;padding:7px 11px;margin-bottom:8px;display:inline-block;}
 .pw-expect strong{color:#3b0764;}
 textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:16px;min-height:70px;resize:vertical;overflow:hidden;margin-top:6px;}
-.pw-name-row{display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+textarea::placeholder{color:#aaa;font-style:italic;}
+.pw-name-row{display:flex;gap:16px;margin-bottom:6px;flex-wrap:wrap;}
 .pw-name-row label{font-size:13.5px;font-weight:700;color:#555;display:block;margin-bottom:4px;}
 .pw-name-row input{border:1px solid #ddd;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:16px;}
 .print-note{font-size:13.5px;color:#888;text-align:center;margin-top:14px;}
@@ -54,11 +60,19 @@ textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8p
   body{background:#fff;padding:0;}
   .pw-tabs{display:none;}
   .pw-guidance-banner{display:none;}
+  .pw-legend{display:none;}
   .print-note{display:none;}
   .pw-part{page-break-inside:avoid;}
-  .pw-channel-panel{display:block !important;border-top:1px dashed #ddd;padding-top:14px;margin-top:14px;}
-  .pw-channel-panel:first-of-type{border-top:none;margin-top:0;padding-top:0;}
-  .pw-channel-heading{display:block !important;}
+
+  /* Print only the channel panel(s) that actually have answers typed in.
+     If someone completed more than one channel, all completed channels print.
+     If nobody has typed anything yet, fall back to just the active tab so the
+     worksheet doesn't print entirely blank. Markup for this is applied by script
+     right before printing — see pw_prepareForPrint(). */
+  .pw-channel-panel{display:none !important;}
+  .pw-channel-panel.has-content{display:block !important;border-top:1px dashed #ddd;padding-top:14px;margin-top:14px;}
+  .pw-channel-panel.has-content.print-first{border-top:none;padding-top:0;margin-top:0;}
+  .pw-channel-panel.has-content .pw-channel-heading{display:block !important;}
 }
 </style>
 </head>
@@ -67,7 +81,7 @@ textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8p
   <div class="pw">
     <div class="pw-head">
       <div class="pw-head-title">DataSys+ V2 Proficiency Worksheet</div>
-      <div class="pw-head-sub">Select your channel below. Parts 2 and 4 are graded only on the channel you submit — no penalty for scenarios left blank in other channels.</div>
+      <div class="pw-head-sub">Select your channel below. Parts 2 and 4 are graded only on the channel(s) you complete — no penalty for scenarios left blank in other channels. If you fill in more than one channel, printing/saving as PDF includes every channel you completed.</div>
     </div>
 
     <div class="pw-guidance-banner">
@@ -76,75 +90,76 @@ textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8p
     </div>
 
     <div class="pw-tabs" id="pwTabs">
-      <button class="pw-tab active" data-ch="enterprise" onclick="pw_showCh('enterprise')">Enterprise</button>
-      <button class="pw-tab" data-ch="government" onclick="pw_showCh('government')">Government</button>
-      <button class="pw-tab" data-ch="academic" onclick="pw_showCh('academic')">Academic</button>
-      <button class="pw-tab" data-ch="partners" onclick="pw_showCh('partners')">Delivery Partners</button>
+      <button class="pw-tab active" data-ch="enterprise">Enterprise</button>
+      <button class="pw-tab" data-ch="government">Government</button>
+      <button class="pw-tab" data-ch="academic">Academic</button>
+      <button class="pw-tab" data-ch="partners">Delivery Partners</button>
     </div>
 
     <div class="pw-body">
       <div class="pw-name-row">
-        <div><label>Name</label><input type="text" placeholder="Your name"></div>
-        <div><label>Date</label><input type="text" placeholder="MM/DD/YYYY"></div>
+        <div><label>Name<span class="req-mark" title="Required">*</span></label><input type="text" placeholder="Your name"></div>
+        <div><label>Date<span class="req-mark" title="Required">*</span></label><input type="text" placeholder="MM/DD/YYYY"></div>
         <div><label>Channel Submitted</label><input type="text" id="pwChannelField" placeholder="e.g. Enterprise" value="Enterprise"></div>
       </div>
+      <div class="pw-legend"><span class="req-mark">*</span> Required field</div>
 
-      <!-- PART 1 — universal -->
+      <!-- PART 1 — universal, same for every channel -->
       <div class="pw-part">
         <div class="pw-part-label">Part 1 — Product Knowledge</div>
 
-        <div class="pw-q">1. What structural change defines DataSys+ V2 vs. V1, and why does it matter to a customer?</div>
+        <div class="pw-q">1. What has changed from V1 to V2, and why does it matter to a customer?<span class="req-mark" title="Required">*</span></div>
         <div class="pw-expect"><strong>Expectation:</strong> 2–3 sentences — name the specific change and give a customer-relevant reason it matters, not just "it's new."</div>
         <div class="pw-help">Look for: the new Data Integration domain (6.0).</div>
-        <textarea onInput="pw_autoGrow(this)"></textarea>
+        <textarea placeholder="Type your answer here — name the specific change and explain why it matters to a customer."></textarea>
 
-        <div class="pw-q">2. Name two of the six exam domains, one topic each, and explain briefly why that domain would matter to a customer.</div>
-        <div class="pw-expect"><strong>Expectation:</strong> 2 domains, 1 topic each, and 1 sentence per domain on why a customer would actually care — not just the domain name and topic listed on their own.</div>
-        <textarea onInput="pw_autoGrow(this)"></textarea>
+        <div class="pw-q">2. Name two of the six domains, and why that domain would matter to a customer.<span class="req-mark" title="Required">*</span></div>
+        <div class="pw-expect"><strong>Expectation:</strong> 2 domains, with 1 sentence per domain on why a customer would actually care — not just the domain names listed on their own.</div>
+        <textarea placeholder="Type your answer here — name two domains and one customer-relevant reason for each."></textarea>
       </div>
 
       <!-- PART 2 — channel-specific, tabbed -->
       <div class="pw-part">
-        <div class="pw-part-label">Part 2 — Customer Application <span style="font-weight:400;color:#888;font-style:italic;">(graded on your submitted channel only)</span></div>
+        <div class="pw-part-label">Part 2 — Customer Application <span style="font-weight:400;color:#888;font-style:italic;">(graded on the channel(s) you complete)</span></div>
 
         <div class="pw-channel-panel active" data-ch="enterprise">
           <div class="pw-channel-heading">Enterprise</div>
-          <div class="pw-q">3. Describe a realistic Enterprise buyer and use case — an IT director, platform lead, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-q">3. Describe a realistic Enterprise buyer and use case — an IT director, platform lead, or similar — who they are, and what gap DataSys+ V2 closes for them.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
-          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <textarea placeholder="Type your answer here — name a role, give 1–2 sentences of context, and the specific gap DataSys+ V2 closes."></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <textarea placeholder="Type your answer here — two talking points, each with a reason it fits this buyer."></textarea>
         </div>
 
         <div class="pw-channel-panel" data-ch="government">
           <div class="pw-channel-heading">Government</div>
-          <div class="pw-q">3. Describe a realistic Government buyer and use case — a workforce development lead, agency IT manager, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-q">3. Describe a realistic Government buyer and use case — a workforce development lead, agency IT manager, or similar — who they are, and what gap DataSys+ V2 closes for them.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
-          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <textarea placeholder="Type your answer here — name a role, give 1–2 sentences of context, and the specific gap DataSys+ V2 closes."></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <textarea placeholder="Type your answer here — two talking points, each with a reason it fits this buyer."></textarea>
         </div>
 
         <div class="pw-channel-panel" data-ch="academic">
           <div class="pw-channel-heading">Academic</div>
-          <div class="pw-q">3. Describe a realistic Academic buyer and use case — a program coordinator, department chair, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-q">3. Describe a realistic Academic buyer and use case — a program coordinator, department chair, or similar — who they are, and what gap DataSys+ V2 closes for them.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
-          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <textarea placeholder="Type your answer here — name a role, give 1–2 sentences of context, and the specific gap DataSys+ V2 closes."></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <textarea placeholder="Type your answer here — two talking points, each with a reason it fits this buyer."></textarea>
         </div>
 
         <div class="pw-channel-panel" data-ch="partners">
           <div class="pw-channel-heading">Delivery Partners</div>
-          <div class="pw-q">3. Describe a realistic Delivery Partner buyer and use case — a training company owner, curriculum lead, or similar — who they are, and what gap DataSys+ V2 closes for them.</div>
+          <div class="pw-q">3. Describe a realistic Delivery Partner buyer and use case — a training company owner, curriculum lead, or similar — who they are, and what gap DataSys+ V2 closes for them.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a named role, 1–2 sentences of situation/context, and a specific gap DataSys+ V2 closes — not a generic buyer description.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
-          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?</div>
+          <textarea placeholder="Type your answer here — name a role, give 1–2 sentences of context, and the specific gap DataSys+ V2 closes."></textarea>
+          <div class="pw-q">4. Which two talking points would you lead with for that buyer, and why those two specifically?<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> 2 talking points, each with 1–2 sentences explaining why it fits this specific buyer — a talking point plus its reasoning, not just a list.</div>
-          <textarea onInput="pw_autoGrow(this)"></textarea>
+          <textarea placeholder="Type your answer here — two talking points, each with a reason it fits this buyer."></textarea>
         </div>
       </div>
 
@@ -152,41 +167,41 @@ textarea{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8p
       <div class="pw-part">
         <div class="pw-part-label">Part 3 — Story Fluency</div>
         <div class="pw-help">Use the Story Structure Framework from Lesson 3 to build a short DataSys+ V2 story for a customer of your choosing.</div>
-        <div class="pw-q">5. Write your story in four labeled parts: (a) your Story Purpose, (b) your Narrative Thread and why it fits this customer, (c) your Key Points tied to that thread, and (d) specific Customer Context connecting your points to this customer's actual situation.</div>
-        <div class="pw-expect"><strong>Expectation:</strong> (a) 1 sentence, (b) 1–2 sentences including your reasoning for the thread, (c) 2–3 points, (d) 1–2 sentences per point connecting it to this customer's specifics. Label each part (a)–(d) — don't submit one unlabeled paragraph.</div>
-        <textarea style="min-height:130px;" onInput="pw_autoGrow(this)"></textarea>
+        <div class="pw-q">5. Tell your story for that customer — using the Story Structure Framework. No need to label each part, but make sure it clearly hits your purpose, your thread, and your key points backed by real context for this customer.<span class="req-mark" title="Required">*</span></div>
+        <div class="pw-expect"><strong>Expectation:</strong> your story should clearly include why this conversation matters to them (purpose), the thread tying it together and why it fits this customer, 2–3 key points, and specific context connecting those points to this customer's actual situation. No need to label parts — just make sure all four show up.</div>
+        <textarea style="min-height:130px;" placeholder="Type your story here — make sure it includes your purpose, your thread (and why it fits), and 2–3 key points tied to this customer's specifics."></textarea>
       </div>
 
       <!-- PART 4 — channel-specific, tabbed -->
       <div class="pw-part">
-        <div class="pw-part-label">Part 4 — Applied Judgment <span style="font-weight:400;color:#888;font-style:italic;">(graded on your submitted channel only)</span></div>
+        <div class="pw-part-label">Part 4 — Applied Judgment <span style="font-weight:400;color:#888;font-style:italic;">(graded on the channel(s) you complete)</span></div>
 
         <div class="pw-channel-panel active" data-ch="enterprise">
           <div class="pw-channel-heading">Enterprise</div>
-          <div class="pw-q">6. Your Enterprise buyer says: "We already have people certified on Azure/AWS — why add this?" Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-q">6. Your Enterprise buyer says: "We already have people certified on Azure/AWS — why add this?" Respond to the objection, then give a specific closing ask that moves the conversation forward.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that doesn't dismiss their existing investment, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
-          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+          <textarea style="min-height:100px;" placeholder="Type your answer here — a sayable response plus one concrete closing ask."></textarea>
         </div>
 
         <div class="pw-channel-panel" data-ch="government">
           <div class="pw-channel-heading">Government</div>
-          <div class="pw-q">6. Your Government buyer says: "Can you confirm this actually counts before the official crosswalk is published?" Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-q">6. Your Government buyer says: "Can you confirm this actually counts before the official crosswalk is published?" Respond to the objection, then give a specific closing ask that moves the conversation forward.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that's honest rather than overpromising, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
-          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+          <textarea style="min-height:100px;" placeholder="Type your answer here — a sayable response plus one concrete closing ask."></textarea>
         </div>
 
         <div class="pw-channel-panel" data-ch="academic">
           <div class="pw-channel-heading">Academic</div>
-          <div class="pw-q">6. Your Academic buyer says: "How is this different from CompTIA Data+, which we already teach?" Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-q">6. Your Academic buyer says: "How is this different from CompTIA Data+, which we already teach?" Respond to the objection, then give a specific closing ask that moves the conversation forward.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that doesn't suggest dropping an existing course, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
-          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+          <textarea style="min-height:100px;" placeholder="Type your answer here — a sayable response plus one concrete closing ask."></textarea>
         </div>
 
         <div class="pw-channel-panel" data-ch="partners">
           <div class="pw-channel-heading">Delivery Partners</div>
-          <div class="pw-q">6. Your Delivery Partner buyer says: "We don't have a lab environment for this — that's a lot of setup on our end." Respond to the objection, then give a specific closing ask that moves the conversation forward.</div>
+          <div class="pw-q">6. Your Delivery Partner buyer says: "We don't have a lab environment for this — that's a lot of setup on our end." Respond to the objection, then give a specific closing ask that moves the conversation forward.<span class="req-mark" title="Required">*</span></div>
           <div class="pw-expect"><strong>Expectation:</strong> a sayable response (2–3 sentences) that addresses the logistics concern directly, plus one concrete closing ask (1 sentence) — not "I'll follow up soon."</div>
-          <textarea style="min-height:100px;" onInput="pw_autoGrow(this)"></textarea>
+          <textarea style="min-height:100px;" placeholder="Type your answer here — a sayable response plus one concrete closing ask."></textarea>
         </div>
       </div>
 
@@ -201,12 +216,62 @@ function pw_showCh(ch){
   const labels = {enterprise:'Enterprise', government:'Government', academic:'Academic', partners:'Delivery Partners'};
   document.getElementById('pwChannelField').value = labels[ch];
 }
+document.querySelectorAll('.pw-tab').forEach(function(btn){
+  btn.addEventListener('click', function(){ pw_showCh(btn.dataset.ch); });
+});
 
 function pw_autoGrow(el){
   el.style.height = 'auto';
   el.style.height = el.scrollHeight + 'px';
 }
-document.querySelectorAll('textarea').forEach(t => pw_autoGrow(t));
+document.querySelectorAll('textarea').forEach(function(t){
+  pw_autoGrow(t);
+  t.addEventListener('input', function(){ pw_autoGrow(t); });
+});
+
+/* Print only the channel(s) that actually have something typed in.
+   If more than one channel has answers, all of them print. If none do,
+   fall back to whichever tab is currently active so the PDF isn't blank. */
+function pw_channelHasContent(ch){
+  return Array.from(document.querySelectorAll('.pw-channel-panel[data-ch="' + ch + '"] textarea'))
+    .some(function(t){ return t.value.trim().length > 0; });
+}
+
+function pw_prepareForPrint(){
+  const channels = ['enterprise','government','academic','partners'];
+  let anyHasContent = false;
+
+  channels.forEach(function(ch){
+    const hasContent = pw_channelHasContent(ch);
+    if(hasContent){ anyHasContent = true; }
+    document.querySelectorAll('.pw-channel-panel[data-ch="' + ch + '"]').forEach(function(panel){
+      panel.classList.toggle('has-content', hasContent);
+      panel.classList.remove('print-first');
+    });
+  });
+
+  if(!anyHasContent){
+    document.querySelectorAll('.pw-channel-panel.active').forEach(function(panel){
+      panel.classList.add('has-content');
+    });
+  }
+
+  document.querySelectorAll('.pw-part').forEach(function(part){
+    let markedFirst = false;
+    part.querySelectorAll(':scope > .pw-channel-panel.has-content').forEach(function(panel){
+      if(!markedFirst){ panel.classList.add('print-first'); markedFirst = true; }
+    });
+  });
+}
+
+function pw_resetAfterPrint(){
+  document.querySelectorAll('.pw-channel-panel').forEach(function(panel){
+    panel.classList.remove('has-content','print-first');
+  });
+}
+
+window.addEventListener('beforeprint', pw_prepareForPrint);
+window.addEventListener('afterprint', pw_resetAfterPrint);
 </script>
 </body>
 </html>
